@@ -33,20 +33,19 @@ struct RecipeDetailView: View {
 }
 
 #Preview {
-    NavigationStack{
-        RecipeDetailView(recipe: Recipe.sampleRecipe)
-    }
+    RecipeDetailView(recipe: Recipe.sampleRecipe)
 }
 
 
 struct DetailViewHeaderComponent: View {
     let recipe: Recipe
+    @Environment(\.verticalSizeClass) var verticalSizeClass
     
     var body: some View {
         ZStack(alignment: .bottom){
             Image(recipe.imageResource)
                 .resizable()
-                .scaledToFit()
+                .adaptiveScaling()
             HStack {
                 Text(recipe.title)
                     .padding()
@@ -66,7 +65,6 @@ struct DetailViewHeaderComponent: View {
             .background(Color(uiColor: .label).opacity(0.5), in: RoundedRectangle(cornerRadius: 8))
             .padding()
         }
-        
     }
 }
 
@@ -79,6 +77,30 @@ struct DetailViewBodyComponent: View {
             .padding()
             .multilineTextAlignment(.leading)
             .lineSpacing(10)
+    }
+}
+
+struct AdaptiveScalingModifier: ViewModifier {
+    @Environment(\.verticalSizeClass) var verticalSizeClass
+    
+    func body(content: Content) -> some View {
+        if verticalSizeClass == .regular {
+            content
+                .scaledToFit() // Landscape: scaleToFit
+        } else {
+            content
+                .scaledToFill() // Portrait: scaleToFill
+                .frame(height: 180)
+                .clipped()
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .padding()
+        }
+    }
+}
+
+extension View {
+    func adaptiveScaling() -> some View {
+        self.modifier(AdaptiveScalingModifier())
     }
 }
 

@@ -70,7 +70,7 @@ extension Recipe {
                                      minPortion: 4,
                                      maxPortion: 5,
                                      preparationTimeInMinutes: 30,
-                                     description: loremIpsum.extractSubstring(start: 0, length: 250),
+                                     description: loremIpsum.extractSubstring(start: 0, length: 350),
                                      ingredients: Ingredient.sampleIngredients,
                                      steps: Step.sampleSteps)
 }
