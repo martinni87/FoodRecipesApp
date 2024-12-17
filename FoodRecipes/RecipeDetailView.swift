@@ -27,7 +27,7 @@ struct RecipeDetailView: View {
             .buttonStyle(.borderedProminent)
         }
         .sheet(isPresented: $hasStarted) {
-            Text("Above here show steps")
+            Text("After this point the app should start showing steps")
         }
     }
 }
