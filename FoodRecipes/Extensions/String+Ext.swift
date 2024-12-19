@@ -8,7 +8,7 @@
 import Foundation
 
 extension String {
-    func extractSubstring(start: Int, length: Int) -> String {
+    func extractSubstring(start: Int = 0, length: Int) -> String {
         // Si start es negativo, se asigna 0 por defecto
         let validStart = max(start, 0)
         

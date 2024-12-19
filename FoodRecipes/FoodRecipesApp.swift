@@ -38,7 +38,7 @@ import SwiftData
 struct FoodRecipesApp: App {
     var body: some Scene {
         WindowGroup {
-            RecipeDetailView(recipe: Recipe.sampleRecipe)
+            RecipesListView(recipes: Recipe.sampleRecipesList)
         }
     }
 }
