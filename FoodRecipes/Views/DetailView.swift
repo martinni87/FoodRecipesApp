@@ -10,6 +10,7 @@ import SwiftUI
 struct DetailView: View {
     
     let recipe: Recipe
+    @StateObject var loremIpsum = APILoremIpsumViewModel()
     
     var body: some View {
         NavigationStack {
@@ -43,12 +44,22 @@ struct DetailView: View {
                         }
                     }
                     .padding(.bottom)
-                    Text(recipe.description)
-                        .multilineTextAlignment(.leading)
+                    HStack {
+                        VStack(alignment: .leading) {
+                            Text(recipe.description)
+                                .multilineTextAlignment(.leading)
+                            Text(loremIpsum.text)
+                            Text(loremIpsum.error)
+                        }
+                        Spacer()
+                    }
                 }
             }
             .padding(.horizontal)
             .navigationTitle(recipe.title)
+        }
+        .task {
+            await loremIpsum.getText(paragraphs: Int.random(in: 1...2))
         }
     }
 }
