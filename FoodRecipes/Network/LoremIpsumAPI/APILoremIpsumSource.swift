@@ -7,12 +7,12 @@
 
 import Foundation
 
-final class APILoremIpsum {
+final class APILoremIpsumSource {
     
     public static func getText(paragraphs: Int) async throws -> FRLoremIpsum {
         let xApiKey = X_API_KEY
         guard let url = URL(string: "https://api.api-ninjas.com/v1/loremipsum?paragraphs=\(paragraphs)") else {
-            throw FRError.invalidURL
+            throw NetworkError.badURL
         }
         
         var urlRequest = URLRequest(url: url)
@@ -21,7 +21,7 @@ final class APILoremIpsum {
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
         
         guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-            throw FRError.invalidResponse
+            throw NetworkError.badResponse
         }
         
         do {
@@ -29,7 +29,7 @@ final class APILoremIpsum {
             jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
             return try jsonDecoder.decode(FRLoremIpsum.self, from: data)
         } catch {
-            throw FRError.invalidData
+            throw NetworkError.badDecoding
         }
         
     }

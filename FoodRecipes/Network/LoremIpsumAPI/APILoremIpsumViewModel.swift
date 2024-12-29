@@ -22,7 +22,7 @@ final class APILoremIpsumViewModel: ObservableObject {
         case .success(let text):
             self.text = text
         case .failure(let error):
-            self.error = error.definition
+            self.error = error.rawValue
         }
     }
     

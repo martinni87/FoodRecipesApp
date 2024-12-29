@@ -10,6 +10,7 @@ import SwiftUI
 struct DetailView: View {
     
     let recipe: Recipe
+    @State var execute = false
     @StateObject var loremIpsum = APILoremIpsumViewModel()
     
     var body: some View {
@@ -50,6 +51,12 @@ struct DetailView: View {
                                 .multilineTextAlignment(.leading)
                             Text(loremIpsum.text)
                             Text(loremIpsum.error)
+                            Button("Create lorem") {
+                                loremIpsum.text = ""
+                                loremIpsum.error = ""
+                                print("Click \(execute)")
+                                execute.toggle()
+                            }
                         }
                         Spacer()
                     }
@@ -59,7 +66,17 @@ struct DetailView: View {
             .navigationTitle(recipe.title)
         }
         .task {
-            await loremIpsum.getText(paragraphs: Int.random(in: 1...2))
+            print("Task \(execute)")
+            if execute {
+                await loremIpsum.getText(paragraphs: Int.random(in: 1...2))
+            }
+        }
+        .onChange(of: execute) { oldValue, newValue in
+            Task {
+                if execute {
+                    await loremIpsum.getText(paragraphs: Int.random(in: 1...2))
+                }
+            }
         }
     }
 }
